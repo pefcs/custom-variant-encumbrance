@@ -68,8 +68,14 @@ Hooks.once('init', () => {
 
       // Update encumbrance thresholds and percentage
       const config = CONFIG.DND5E.encumbrance;
+      // Checking Powerful Build feat
+      const hasPowerfulBuild = this.system.parent.flags?.dnd5e?.powerfulBuild || false;
       const sizeConfig = CONFIG.DND5E.actorSizes[this.system.traits.size] || {};
-      const sizeMod = sizeConfig.capacityMultiplier || 1;
+      let sizeMod = sizeConfig.capacityMultiplier || 1;
+      // Increase size if has Powerful Build
+      if (hasPowerfulBuild) {
+		    sizeMod += 1;
+	    }
       const maxWeight = sizeMod * 15 * (this.system.abilities.str.value || 10);
 
       this.system.attributes.encumbrance.max = maxWeight;
