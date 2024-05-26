@@ -2,7 +2,7 @@
   "name": "custom-variant-encumbrance",
   "title": "Custom Variant Encumbrance",
   "description": "A module to customize encumbrance thresholds and item weight calculations.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Pefcs",
   "scripts": ["scripts/encumbrance.js"],
   "relationships": {
