@@ -60,13 +60,19 @@ Hooks.once('init', () => {
         const equipped = item.system.equipped || false;
         const inContainer = item.system.container != null;
 	let containerEquipped = false;
-
+	let weightlessContents = false;	      
+        // Checking if item is in a container
         if (inContainer) {
           const container = this.items.get(item.system.container);
-          containerEquipped = container ? container.system.equipped : false;
+          // Checking if the container is equipped and if not "Bag of Holding" type		
+          if (container) {
+            containerEquipped = container.system.equipped;
+            if (container.system.properties instanceof Set) {
+	      weightlessContents = container.system.properties.has('weightlessContents');
+            }
         }
 	      
-        if (equipped || (inContainer && containerEquipped)) {
+        if (equipped || (inContainer && containerEquipped && !weightlessContents)) {
           totalWeight += itemWeight * itemQuantity;
         }
       });
@@ -175,13 +181,20 @@ function updateActorEncumbrance(actor) {
     const itemQuantity = item.system.quantity || 0;
     const inContainer = item.system.container != null;
     let containerEquipped = false;
-
+    let weightlessContents = false;
+    // Checking if item is in a container
     if (inContainer) {
       const container = actor.items.get(item.system.container);
-      containerEquipped = container ? container.system.equipped : false;
+      // Checking if the container is equipped and if not "Bag of Holding" type
+      if (container) {
+        containerEquipped = container.system.equipped;
+        if (container.system.properties instanceof Set) {
+	  weightlessContents = container.system.properties.has('weightlessContents');
+        }
+      }
     }
 	  
-    if (item.system.equipped || countUnequippedItems || (inContainer && containerEquipped)) {
+    if (item.system.equipped || countUnequippedItems || (inContainer && containerEquipped && !weightlessContents)) {
       return acc + (itemWeight * itemQuantity);
     }
     return acc;
