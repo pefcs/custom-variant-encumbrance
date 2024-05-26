@@ -70,6 +70,7 @@ Hooks.once('init', () => {
             if (container.system.properties instanceof Set) {
 	      weightlessContents = container.system.properties.has('weightlessContents');
             }
+	  }
         }
 	      
         if (equipped || (inContainer && containerEquipped && !weightlessContents)) {
