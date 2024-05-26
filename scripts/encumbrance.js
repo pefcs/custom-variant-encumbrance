@@ -50,6 +50,8 @@ Hooks.once('init', () => {
 
     // Inject custom encumbrance calculation if unequipped items are not counted
     if (!countUnequippedItems) {
+      if (this.type === "group") return;
+	    
       this.system.attributes.encumbrance = this.system.attributes.encumbrance || {};
 
       let totalWeight = 0;
