@@ -74,8 +74,8 @@ Hooks.once('init', () => {
       let sizeMod = sizeConfig.capacityMultiplier || 1;
       // Increase size if has Powerful Build
       if (hasPowerfulBuild) {
-		    sizeMod += 1;
-	    }
+	sizeMod += 1;
+      }
       const maxWeight = sizeMod * 15 * (this.system.abilities.str.value || 10);
 
       this.system.attributes.encumbrance.max = maxWeight;
