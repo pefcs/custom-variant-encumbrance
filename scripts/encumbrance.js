@@ -75,7 +75,7 @@ Hooks.once('init', () => {
 	  }
         }
 	      
-        if (equipped || (inContainer && containerEquipped && !weightlessContents)) {
+        if ((equipped && !weightlessContents) || (inContainer && containerEquipped && !weightlessContents)) {
           totalWeight += itemWeight * itemQuantity;
         }
       });
@@ -197,7 +197,7 @@ function updateActorEncumbrance(actor) {
       }
     }
 	  
-    if (item.system.equipped || countUnequippedItems || (inContainer && containerEquipped && !weightlessContents)) {
+    if ((item.system.equipped && !weightlessContents) || countUnequippedItems || (inContainer && containerEquipped && !weightlessContents)) {
       return acc + (itemWeight * itemQuantity);
     }
     return acc;
