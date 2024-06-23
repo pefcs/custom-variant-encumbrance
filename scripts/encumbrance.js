@@ -37,6 +37,15 @@ Hooks.once('init', () => {
     type: Boolean,
     default: true
   });
+	
+  game.settings.register("custom-variant-encumbrance", "countWeaponShield", {
+    name: "Count Weapons and Shield",
+    hint: "Whether to count the shields and weapons which are not in bags regardless.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });	
 
   // Update global encumbrance thresholds on init with the actual configuration
   updateGlobalEncumbranceThresholds();
@@ -44,6 +53,7 @@ Hooks.once('init', () => {
   // Register a wrapper for the prepareDerivedData function to customize encumbrance calculation
   libWrapper.register("custom-variant-encumbrance", "CONFIG.Actor.documentClass.prototype.prepareDerivedData", function (wrapped, ...args) {
     const countUnequippedItems = game.settings.get("custom-variant-encumbrance", "countUnequippedItems");
+    const countWeaponShield = game.settings.get("custom-variant-encumbrance", "countWeaponShield");	  
 
     // Call the original function first
     wrapped.apply(this, args);
@@ -61,6 +71,9 @@ Hooks.once('init', () => {
         const itemQuantity = item.system.quantity || 0;
         const equipped = item.system.equipped || false;
         const inContainer = item.system.container != null;
+	const isWeapon = item.type === "weapon";
+	const isEquipment = item.type === "equipment";
+	const isLowarmor = (item.system.armor?.value ?? 0) <= 6 && (item.system.armor?.value ?? 0) > 0;	      
 	let containerEquipped = false;
 	let weightlessContents = false;	      
         // Checking if item is in a container
@@ -75,7 +88,7 @@ Hooks.once('init', () => {
 	  }
         }
 	      
-        if ((equipped && !weightlessContents) || (inContainer && containerEquipped && !weightlessContents)) {
+        if ((equipped && !weightlessContents) || (inContainer && containerEquipped && !weightlessContents) || (!equipped && (isWeapon || (isEquipment && isLowarmor)) && !weightlessContents && countWeaponShield && !inContainer)) {
           totalWeight += itemWeight * itemQuantity;
         }
       });
