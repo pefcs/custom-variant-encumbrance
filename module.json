@@ -2,7 +2,7 @@
   "name": "custom-variant-encumbrance",
   "title": "Custom Variant Encumbrance",
   "description": "A module to customize encumbrance thresholds and item weight calculations.",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "authors": [
     {
       "name": "Pefcs"
@@ -39,3 +39,4 @@
   "download": "https://github.com/pefcs/custom-variant-encumbrance/releases/latest/download/module.zip",
   "readme": "https://github.com/pefcs/custom-variant-encumbrance#readme"
 }
+
